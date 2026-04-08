@@ -114,35 +114,45 @@ AppState
 
 ### 3.4 Domain Model Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      GameConfig (JSON)                      │
-│  ┌──────────┐  ┌──────────────┐  ┌───────────────────────┐ │
-│  │  title   │  │ ThemeConfig  │  │   WordEntry[]         │ │
-│  └──────────┘  └──────────────┘  │  ├── word             │ │
-│                                   │  ├── categories       │ │
-│                                   │  └── hints[5]         │ │
-│                                   └───────────────────────┘ │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ load + normalize (FR-2.5)
-                       ▼
-┌──────────────────────────────────────────────────────────────┐
-│                    Engine Runtime State                       │
-│  ┌──────────────────┐  ┌──────────────┐  ┌───────────────┐  │
-│  │ NormalizedWord[]  │  │CategoryIndex[]│  │ SessionState  │  │
-│  │ (processed data)  │  │(auto-derived) │  │ (in-memory)   │  │
-│  └────────┬─────────┘  └──────────────┘  └───────────────┘  │
-│           │ select random (FR-4.1)                           │
-│           ▼                                                  │
-│  ┌──────────────────────────────────────────────────────┐    │
-│  │                    RoundState                         │    │
-│  │  target ← NormalizedWord                              │    │
-│  │  guesses[] ← Guess { letters[], feedback[] }          │    │
-│  │  currentInput[] ← live typing buffer                  │    │
-│  │  revealedHints ← Set<number>                          │    │
-│  │  status: playing | won | lost                         │    │
-│  └──────────────────────────────────────────────────────┘    │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph GameConfig["GameConfig (JSON)"]
+        direction LR
+        title_node["title"]
+        theme["ThemeConfig"]
+        words["WordEntry[]<br/>├── word<br/>├── categories<br/>└── hints[5]"]
+    end
+
+    GameConfig -->|"load + normalize"| EngineState
+
+    subgraph EngineState["Engine Runtime State"]
+        direction TB
+        subgraph TopRow[" "]
+            direction LR
+            normalized["NormalizedWord[]<br/>(processed data)"]
+            catIndex["CategoryIndex[]<br/>(auto-derived)"]
+            session["SessionState<br/>(in-memory)"]
+        end
+
+        normalized -->|"select random"| RoundState
+
+        subgraph RoundState["RoundState"]
+            roundContent["target <- NormalizedWord<br/>guesses[] <- Guess { letters[], feedback[] }<br/>currentInput[] <- live typing buffer
+            revealedHints <- Set(number)<br/>status: playing | won | lost"]
+        end
+    end
+
+    style GameConfig fill:transparent,stroke:#888,stroke-width:2px
+    style EngineState fill:transparent,stroke:#888,stroke-width:2px
+    style TopRow fill:transparent,stroke:none
+    style RoundState fill:transparent,stroke:#888,stroke-width:1px
+    style title_node fill:transparent,stroke:#888,stroke-width:1px
+    style theme fill:transparent,stroke:#888,stroke-width:1px
+    style words fill:transparent,stroke:#888,stroke-width:1px,text-align:left
+    style normalized fill:transparent,stroke:#888,stroke-width:1px
+    style catIndex fill:transparent,stroke:#888,stroke-width:1px
+    style session fill:transparent,stroke:#888,stroke-width:1px
+    style roundContent fill:transparent,stroke:none,text-align:left
 ```
 
 ## 4. Project Structure
@@ -233,46 +243,51 @@ wordle-engine/
 
 ### 5.1 Data Flow
 
-```
-                    ┌────────────────────┐
-                    │   football.json    │  (static file)
-                    └─────────┬──────────┘
-                              │ fetch at startup
-                              ▼
-                    ┌────────────────────┐
-                    │  validation.ts     │  validates structure
-                    │  normalization.ts  │  normalizes words
-                    │  categories.ts     │  derives categories
-                    └─────────┬──────────┘
-                              │ produces
-                              ▼
-              ┌───────────────────────────────┐
-              │        GameContext             │
-              │  (React Context + useReducer)  │
-              │                               │
-              │  state: AppState              │
-              │  dispatch: (action) => void   │
-              └──────┬──────────────┬─────────┘
-                     │              │
-          ┌──────────┘              └──────────────┐
-          ▼                                        ▼
-┌──────────────────┐                    ┌──────────────────┐
-│   FilterPanel    │                    │    Main Area     │
-│  ├─CategoryFilter│                    │  ├── Grid        │
-│  ├─CategoryFilter│                    │  │   ├─ GridRow  │
-│  ├─WordCount     │                    │  │   │  ├─ Cell  │
-│  └─NextWordBtn   │                    │  │   │  └─ Hint? │
-│                  │                    │  │   └─ ...      │
-│  dispatches:     │                    │  ├── StatusMsg   │
-│  SET_FILTER      │                    │  └── Keyboard    │
-│  NEXT_WORD       │                    │      └─ Key      │
-└──────────────────┘                    │                  │
-                                        │  dispatches:     │
-                                        │  INPUT_LETTER    │
-                                        │  DELETE_LETTER   │
-                                        │  SUBMIT_GUESS    │
-                                        │  TOGGLE_HINT     │
-                                        └──────────────────┘
+```mermaid
+graph TD
+    A["football.json
+    (static file)"]
+    A -->|"fetch at startup"| B
+
+    B["
+    validation.ts 
+    normalization.ts 
+    categories.ts "]
+    B -->|"produces"| C
+
+    C["GameContext
+    (React Context + useReducer)
+    state: AppState
+    dispatch: (action) => void"]
+    C --> D
+    C --> E
+
+    D["FilterPanel
+    ├─ CategoryFilter
+    ├─ CategoryFilter
+    ├─ WordCount     
+    └─ NextWordBt        
+    
+
+    dispatches:
+    SET_FILTER
+    NEXT_WORD"]
+
+    E["Main Area
+    ├── Grid         
+    │   ├─ GridRow    
+    │   │  ├─ Cell      
+    │   │  └─ Hint?    
+    │   └─ ...            
+    ├── StatusMsg    
+    └── Keyboard     
+          └─ Key
+    
+    dispatches:
+    INPUT_LETTER
+    DELETE_LETTER
+    SUBMIT_GUESS
+    TOGGLE_HINT"]
 ```
 
 ### 5.2 Action Types (useReducer)
