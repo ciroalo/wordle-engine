@@ -205,9 +205,9 @@ This document compiles all the functionality of the project `wordle-engine`.
 | ID | Requirement |
 |---|-----|
 | C-1 | Fully client-side - no backend, no database, no API |
-| C-1 | No authentication or user management |
-| C-1 | No third-party analytics or tracking in V1 |
-| C-1 | Configuration is a static JSON file - no dynamic content management |
+| C-2 | No authentication or user management |
+| C-3 | No third-party analytics or tracking in V1 |
+| C-4 | Configuration is a static JSON file - no dynamic content management |
 
 ## 5. Traceability to Product Concept
  
