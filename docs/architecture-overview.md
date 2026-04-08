@@ -4,7 +4,7 @@
 > **Project Manager:** @ciroalo  
 > **Last Revision Date:** April 6, 2026  
 > **Version:**  0.1.0  
-> **Status:** Draft
+> **Status:** Accepted
 
 ## 1. Tech Stack
 
