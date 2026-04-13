@@ -134,35 +134,37 @@ describe("validateConfig", () => {
   });
 
   // --- word entries ---
-  it('rejects entry with missing word', () => {
+  it("rejects entry with missing word", () => {
     const config = validConfig();
     delete (config.dataset[0] as Record<string, unknown>).word;
     const result = validateConfig(config);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.errors.some((e) => e.includes('dataset[0].word'))).toBe(true);
+      expect(result.errors.some((e) => e.includes("dataset[0].word"))).toBe(
+        true,
+      );
     }
   });
 
-  it('rejects entry with non-object categories', () => {
+  it("rejects entry with non-object categories", () => {
     const config = validConfig();
-    (config.dataset[0] as Record<string, unknown>).categories = 'not an object';
+    (config.dataset[0] as Record<string, unknown>).categories = "not an object";
     const result = validateConfig(config);
     expect(result.success).toBe(false);
   });
 
-  it('rejects entry with non-array category values', () => {
+  it("rejects entry with non-array category values", () => {
     const config = validConfig();
-    config.dataset[0].categories.position = 'striker' as unknown as string[];
+    config.dataset[0].categories.position = "striker" as unknown as string[];
     const result = validateConfig(config);
     expect(result.success).toBe(false);
   });
 
-  // --- hints --- 
+  // --- hints ---
 
-  it('rejects entry with wrong number of hints', () => {
+  it("rejects entry with wrong number of hints", () => {
     const config = validConfig();
-    config.dataset[0].hints = ['one', 'two', 'three'] as unknown as [
+    config.dataset[0].hints = ["one", "two", "three"] as unknown as [
       string,
       string,
       string,
@@ -172,27 +174,27 @@ describe("validateConfig", () => {
     const result = validateConfig(config);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.errors.some((e) => e.includes('exactly 5'))).toBe(true);
+      expect(result.errors.some((e) => e.includes("exactly 5"))).toBe(true);
     }
   });
 
-  it('rejects entry with empty hint string', () => {
+  it("rejects entry with empty hint string", () => {
     const config = validConfig();
-    config.dataset[0].hints[2] = '  ';
+    config.dataset[0].hints[2] = "  ";
     const result = validateConfig(config);
     expect(result.success).toBe(false);
-    if(!result.success) {
-      expect(result.errors.some((e) => e.includes('hints[2]'))).toBe(true);
+    if (!result.success) {
+      expect(result.errors.some((e) => e.includes("hints[2]"))).toBe(true);
     }
   });
 
   // --- multiple errors ---
 
-  it('collects multiple errors in one pass', () => {
+  it("collects multiple errors in one pass", () => {
     const config = {
-      title: '',
+      title: "",
       theme: {},
-      dataset: [{ word: '', categories: null, hints: [] }],
+      dataset: [{ word: "", categories: null, hints: [] }],
     };
     const result = validateConfig(config);
     expect(result.success).toBe(false);
