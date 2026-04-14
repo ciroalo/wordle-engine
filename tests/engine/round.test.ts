@@ -248,7 +248,7 @@ describe("toggleHint", () => {
     expect(hidden.revealedHints.has(0)).toBe(false);
   });
 
-  it('allows multiple hints open simultaneously', () => {
+  it("allows multiple hints open simultaneously", () => {
     const round = roundWithFailedGuesses(3);
     let result = toggleHint(round, 0);
     result = toggleHint(result, 1);
@@ -256,29 +256,29 @@ describe("toggleHint", () => {
     expect(result.revealedHints.size).toBe(3);
   });
 
-  it('ignores hint for index that has no guess yet', () => {
+  it("ignores hint for index that has no guess yet", () => {
     const round = roundWithFailedGuesses(1);
     const result = toggleHint(round, 3); // no guess at index 3
     expect(result.revealedHints.size).toBe(0);
   });
 
-  it('ignores hint for a correct guess', () => {
-    const round = playGuess(createRound(makeTarget('CAT')), 'CAT');
+  it("ignores hint for a correct guess", () => {
+    const round = playGuess(createRound(makeTarget("CAT")), "CAT");
     const result = toggleHint(round, 0);
     expect(result.revealedHints.size).toBe(0);
   });
 
-  it('ignores hint for index 5 (6th row — no hint available)', () => {
+  it("ignores hint for index 5 (6th row — no hint available)", () => {
     const round = roundWithFailedGuesses(5);
     // Simulate a 6th failed guess
-    const finalRound = playGuess(round, 'FOX');
-    expect(finalRound.status).toBe('lost');
+    const finalRound = playGuess(round, "FOX");
+    expect(finalRound.status).toBe("lost");
 
     const result = toggleHint(finalRound, 5);
     expect(result.revealedHints.size).toBe(0);
   });
 
-  it('ignores negative index', () => {
+  it("ignores negative index", () => {
     const round = roundWithFailedGuesses(1);
     const result = toggleHint(round, -1);
     expect(result.revealedHints.size).toBe(0);
