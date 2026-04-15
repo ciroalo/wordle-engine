@@ -1,0 +1,97 @@
+{
+  "title": "Football Wordle",
+  "theme": {
+    "primaryColor": "#1a1a2e",
+    "accentColor": "#e94560",
+    "greenColor": "#538d4e",
+    "yellowColor": "#b59f3b",
+    "grayColor": "#3a3a3c"
+  },
+  "dataset": [
+    {
+      "word": "Thierry Henry",
+      "categories": {
+        "position": ["Striker"],
+        "country": ["France"],
+        "league": ["Premier League", "La Liga"],
+        "club": ["Arsenal", "Barcelona", "Monaco"],
+        "era": ["1990s", "2000s"]
+      },
+      "hints": [
+        "Born in 1977",
+        "Born in Les Ulis, France",
+        "All-time top scorer for the French national team",
+        "Won the Premier League unbeaten",
+        "World Cup winner in 1998"
+      ]
+    },
+    {
+      "word": "Zinedine Zidane",
+      "categories": {
+        "position": ["Midfielder"],
+        "country": ["France"],
+        "league": ["Serie A", "La Liga"],
+        "club": ["Juventus", "Real Madrid", "Bordeaux"],
+        "era": ["1990s", "2000s"]
+      },
+      "hints": [
+        "Born in 1972",
+        "Born in Marseille, France",
+        "Famous for a headbutt in 2006 World Cup final",
+        "Won three consecutive Champions League titles as manager",
+        "Scored two goals in the 1998 World Cup final"
+      ]
+    },
+    {
+      "word": "Ronaldinho",
+      "categories": {
+        "position": ["Midfielder", "Striker"],
+        "country": ["Brazil"],
+        "league": ["La Liga", "Serie A", "Ligue 1"],
+        "club": ["Barcelona", "AC Milan", "Paris Saint-Germain"],
+        "era": ["2000s"]
+      },
+      "hints": [
+        "Born in 1980",
+        "Born in Porto Alegre, Brazil",
+        "Won the Ballon d'Or in 2005",
+        "Known for his skill and trademark smile",
+        "World Cup winner in 2002"
+      ]
+    },
+    {
+      "word": "Paolo Maldini",
+      "categories": {
+        "position": ["Defender"],
+        "country": ["Italy"],
+        "league": ["Serie A"],
+        "club": ["AC Milan"],
+        "era": ["1980s", "1990s", "2000s"]
+      },
+      "hints": [
+        "Born in 1968",
+        "Born in Milan, Italy",
+        "Spent his entire career at one club",
+        "Won five Champions League titles",
+        "Considered one of the greatest defenders of all time"
+      ]
+    },
+    {
+      "word": "Cristiano Ronaldo",
+      "categories": {
+        "position": ["Striker", "Winger"],
+        "country": ["Portugal"],
+        "league": ["Premier League", "La Liga", "Serie A"],
+        "club": ["Manchester United", "Real Madrid", "Juventus", "Sporting CP"],
+        "era": ["2000s", "2010s", "2020s"]
+      },
+      "hints": [
+        "Born in 1985",
+        "Born in Funchal, Madeira, Portugal",
+        "All-time top scorer in Champions League history",
+        "Won league titles in England, Spain, and Italy",
+        "Five-time Ballon d'Or winner"
+      ]
+    }
+  ]
+}
