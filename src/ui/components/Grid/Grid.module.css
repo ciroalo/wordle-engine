@@ -1,0 +1,130 @@
+/* ============================================================
+   Grid Layout
+   ============================================================ */
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 1rem 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* ============================================================
+   Row
+   ============================================================ */
+
+.rowWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+/* ============================================================
+   Cell
+   ============================================================ */
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #3a3a3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.cell.active {
+  border-color: #565656;
+}
+
+.cell.filled {
+  border-color: #818384;
+}
+
+/* Feedback states */
+.correct {
+  background-color: #538d4e;
+  border-color: #538d4e;
+}
+
+.present {
+  background-color: #b59f3b;
+  border-color: #b59f3b;
+}
+
+.absent {
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
+}
+
+/* ============================================================
+   Separator
+   ============================================================ */
+
+.separator {
+  width: 20px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #565656;
+  user-select: none;
+}
+
+/* ============================================================
+   Hints
+   ============================================================ */
+
+.hintArea {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.hintButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #565656;
+  background: transparent;
+  color: #818384;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.hintButton:hover {
+  border-color: #818384;
+  color: #ffffff;
+}
+
+.hintButtonActive {
+  background-color: #565656;
+  color: #ffffff;
+  border-color: #565656;
+}
+
+.hintText {
+  font-size: 0.85rem;
+  color: #818384;
+  text-align: center;
+  padding: 2px 8px;
+}
