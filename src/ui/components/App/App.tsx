@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { validateConfig } from "@engine/validation";
 import Grid from "../Grid/Grid";
+import Keyboard from "../Keyboard/Keyboard";
 import styles from "./App.module.css";
 
 const CONFIG_URL = "/data/config.json";
@@ -68,6 +69,7 @@ export default function App() {
     <div className={styles.container}>
       <h1 className={styles.title}>{state.config?.title}</h1>
       <Grid />
+      <Keyboard />
     </div>
   );
 }
