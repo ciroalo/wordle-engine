@@ -1,5 +1,5 @@
-import type { LetterFeedback } from '@engine/types';
-import { SEPARATOR_CHAR } from '@engine/types';
+import type { LetterFeedback } from "@engine/types";
+import { SEPARATOR_CHAR } from "@engine/types";
 import styles from "./Grid.module.css";
 
 interface GridCellProps {
