@@ -1,4 +1,4 @@
-import { WordEntry, NormalizedWord } from "./types";
+import type { WordEntry, NormalizedWord } from "./types";
 
 // ============================================================
 // Accent / diacritic transliteration map

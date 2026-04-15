@@ -1,8 +1,8 @@
 import {
-  GameConfig,
-  WordEntry,
-  ThemeConfig,
-  HintTuple,
+  type GameConfig,
+  type WordEntry,
+  type ThemeConfig,
+  type HintTuple,
   HINTS_PER_WORD,
 } from "./types";
 

@@ -1,4 +1,4 @@
-import { NormalizedWord, CategoryIndex } from "./types";
+import type { NormalizedWord, CategoryIndex } from "./types";
 
 /**
  * Scans the dataset and derives all categories with their unique values.
