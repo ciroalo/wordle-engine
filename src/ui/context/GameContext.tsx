@@ -1,9 +1,8 @@
-import { createContext, useContext, useReducer, ReactNode } from "react";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
 import type {
   AppState,
   GameConfig,
   NormalizedWord,
-  CategoryIndex,
   SessionState,
   KeyState,
   RoundState,
