@@ -16,7 +16,7 @@ export default function Key({
 }: KeyProps) {
   const classes = [
     styles.key,
-    state !== "unknonw" ? styles[state] : "",
+    state !== "unknown" ? styles[state] : "",
     isWide ? styles.wide : "",
   ]
     .filter(Boolean)
