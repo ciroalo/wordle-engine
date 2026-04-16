@@ -19,7 +19,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@engine/*": ["./src/engine/*"],
+      "@ui/*": ["./src/ui/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
