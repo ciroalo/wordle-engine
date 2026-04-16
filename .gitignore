@@ -3,3 +3,10 @@ dist
 .DS_Store
 *.local
 coverage
+
+# Prevent stray compiled JS next to TS files
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+tests/**/*.js
+tests/**/*.js.map
