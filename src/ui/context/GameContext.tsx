@@ -32,7 +32,8 @@ export type GameAction =
   | { type: "INPUT_LETTER"; letter: string }
   | { type: "DELETE_LETTER" }
   | { type: "SUBMIT_GUESS" }
-  | { type: "TOGGLE_HINT"; hintIndex: number };
+  | { type: "TOGGLE_HINT"; hintIndex: number }
+  | { type: "RESET_SESSION" };
 
 // ============================================================
 // Initial State
@@ -216,6 +217,27 @@ function gameReducer(state: AppState, action: GameAction): AppState {
       if (newRound === state.round) return state;
 
       return { ...state, round: newRound };
+    }
+
+    case "RESET_SESSION": {
+      // clears played words but preserve active filters and config
+      // immediately starts a fresh round
+      const freshSession: SessionState = {
+        playedWordIds: new Set<string>(),
+        activeFilters: state.session.activeFilters,
+      };
+
+      const { round, session } = startNewRound(
+        state.normalizedWords,
+        freshSession,
+      );
+
+      return {
+        ...state,
+        session,
+        round,
+        keyboardState: createInitialKeyboardState(),
+      };
     }
 
     default:

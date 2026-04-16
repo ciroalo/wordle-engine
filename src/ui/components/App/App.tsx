@@ -98,10 +98,11 @@ export default function App() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>{state.config?.title}</h1>
-        <StatusMessage />
         <Grid />
         <Keyboard />
       </main>
+
+      <StatusMessage />
     </div>
   );
 }
