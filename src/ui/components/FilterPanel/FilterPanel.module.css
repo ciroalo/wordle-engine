@@ -1,7 +1,3 @@
-/* ============================================================
-   Panel Layout
-   ============================================================ */
-
 .panel {
   display: flex;
   flex-direction: column;
@@ -10,8 +6,8 @@
   width: 240px;
   height: 100vh;
   overflow-y: auto;
-  border-right: 1px solid #3a3a3c;
-  background-color: #1a1a1e;
+  border-right: 1px solid var(--color-border);
+  background-color: var(--color-surface);
 }
 
 .filters {
@@ -20,10 +16,6 @@
   gap: 1rem;
   flex: 1;
 }
-
-/* ============================================================
-   Category
-   ============================================================ */
 
 .category {
   display: flex;
@@ -41,14 +33,14 @@
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #818384;
+  color: var(--color-text-muted);
   letter-spacing: 0.05em;
 }
 
 .clearButton {
   background: none;
   border: none;
-  color: #e94560;
+  color: var(--color-accent);
   font-size: 0.7rem;
   cursor: pointer;
   padding: 0;
@@ -57,10 +49,6 @@
 .clearButton:hover {
   text-decoration: underline;
 }
-
-/* ============================================================
-   Values (Checkboxes)
-   ============================================================ */
 
 .values {
   display: flex;
@@ -74,15 +62,15 @@
   gap: 6px;
   cursor: pointer;
   font-size: 0.8rem;
-  color: #d7dadc;
+  color: var(--color-text);
 }
 
 .valueLabel:hover {
-  color: #ffffff;
+  color: var(--color-text);
 }
 
 .checkbox {
-  accent-color: #538d4e;
+  accent-color: var(--color-correct);
   cursor: pointer;
 }
 
@@ -90,21 +78,17 @@
   line-height: 1.3;
 }
 
-/* ============================================================
-   Controls
-   ============================================================ */
-
 .controls {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding-top: 1rem;
-  border-top: 1px solid #3a3a3c;
+  border-top: 1px solid var(--color-border);
 }
 
 .wordCount {
   font-size: 0.8rem;
-  color: #818384;
+  color: var(--color-text-muted);
   text-align: center;
 }
 
@@ -113,20 +97,20 @@
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #538d4e;
-  color: #ffffff;
+  background-color: var(--color-correct);
+  color: var(--color-text);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .nextWordButton:hover:not(:disabled) {
-  background-color: #6aaf5e;
+  opacity: 0.85;
 }
 
 .nextWordButton:disabled {
-  background-color: #3a3a3c;
-  color: #565656;
+  background-color: var(--color-border);
+  color: var(--color-text-dim);
   cursor: not-allowed;
 }

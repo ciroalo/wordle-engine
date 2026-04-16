@@ -11,13 +11,13 @@
 }
 
 .won {
-  background-color: #538d4e;
-  color: #ffffff;
+  background-color: var(--color-correct);
+  color: var(--color-text);
 }
 
 .lost {
-  background-color: #3a3a3c;
-  color: #ffffff;
+  background-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .answer {

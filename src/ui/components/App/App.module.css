@@ -7,22 +7,16 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #121213;
-  color: #ffffff;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
 }
 
 .message {
   font-size: 1.2rem;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .error {
   font-size: 1rem;
-  color: #e94560;
+  color: var(--color-accent);
   white-space: pre-line;
   text-align: center;
 }
@@ -34,16 +28,11 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background-color: #121213;
-  color: #ffffff;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
 }
 
 .sidebar {
   flex-shrink: 0;
+  width: 240px;
 }
 
 .main {
@@ -53,9 +42,85 @@
   align-items: center;
   padding: 1rem;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .title {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* ============================================================
+   Mobile Toggle
+   ============================================================ */
+
+.mobileToggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.overlay {
+  display: none;
+}
+
+/* ============================================================
+   Mobile (≤ 768px)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .mobileToggle {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 15;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+  }
+
+  .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+  .title {
+    font-size: 1.2rem;
+  }
 }
