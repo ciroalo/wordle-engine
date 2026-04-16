@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { computeKeyboardState } from "../../src/engine/keyboard-state";
-import { Guess } from "../../src/engine/types";
+import type { Guess } from "../../src/engine/types";
 
 // ============================================================
 // Helper

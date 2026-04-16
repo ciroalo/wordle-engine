@@ -4,7 +4,7 @@ import {
   getFilteredWords,
   getAvailableWords,
 } from "../../src/engine/filtering";
-import { NormalizedWord } from "../../src/engine/types";
+import type { NormalizedWord } from "../../src/engine/types";
 
 // ============================================================
 // Helper

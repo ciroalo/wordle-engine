@@ -6,7 +6,7 @@ import {
   normalizeWordEntry,
   normalizeDataset,
 } from "../../src/engine/normalization";
-import { WordEntry } from "../../src/engine/types";
+import type { WordEntry } from "../../src/engine/types";
 
 // ============================================================
 // Helper

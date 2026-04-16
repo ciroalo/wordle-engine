@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { deriveCategories } from "../../src/engine/categories";
-import { NormalizedWord } from "../../src/engine/types";
+import type { NormalizedWord } from "../../src/engine/types";
 
 // ============================================================
 // Helper

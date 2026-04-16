@@ -7,8 +7,8 @@ import {
   toggleHint,
 } from "../../src/engine/round";
 import {
-  NormalizedWord,
-  RoundState,
+  type NormalizedWord,
+  type RoundState,
   MAX_ATTEMPTS,
 } from "../../src/engine/types";
 
