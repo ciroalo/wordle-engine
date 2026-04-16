@@ -1,20 +1,18 @@
-.container {
+/* ============================================================
+   Loading / Error States
+   ============================================================ */
+
+.loadingContainer {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
+  background-color: #121213;
+  color: #ffffff;
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
-  padding: 1rem;
-  background-color: #121213;
-  color: #ffffff;
-}
-
-.title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .message {
@@ -27,4 +25,37 @@
   color: #e94560;
   white-space: pre-line;
   text-align: center;
+}
+
+/* ============================================================
+   Main Layout
+   ============================================================ */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #121213;
+  color: #ffffff;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.sidebar {
+  flex-shrink: 0;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }

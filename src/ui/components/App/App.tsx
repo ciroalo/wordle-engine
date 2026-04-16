@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { validateConfig } from "@engine/validation";
+import FilterPanel from "../FilterPanel/FilterPanel";
 import Grid from "../Grid/Grid";
 import Keyboard from "../Keyboard/Keyboard";
+import StatusMessage from "../StatusMessage/StatusMessage";
 import styles from "./App.module.css";
 
 const CONFIG_URL = "/data/config.json";
@@ -51,7 +53,7 @@ export default function App() {
 
   if (loadingStatus === "loading") {
     return (
-      <div className={styles.container}>
+      <div className={styles.loadingContainer}>
         <p className={styles.message}>Loading game...</p>
       </div>
     );
@@ -59,17 +61,23 @@ export default function App() {
 
   if (loadingStatus === "error") {
     return (
-      <div className={styles.container}>
+      <div className={styles.loadingContainer}>
         <p className={styles.error}>{errorMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>{state.config?.title}</h1>
-      <Grid />
-      <Keyboard />
+    <div className={styles.layout}>
+      <aside className={styles.sidebar}>
+        <FilterPanel />
+      </aside>
+      <main className={styles.main}>
+        <h1 className={styles.title}>{state.config?.title}</h1>
+        <StatusMessage />
+        <Grid />
+        <Keyboard />
+      </main>
     </div>
   );
 }
