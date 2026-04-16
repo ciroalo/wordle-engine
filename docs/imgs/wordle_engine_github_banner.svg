@@ -60,7 +60,7 @@
     <!-- Paper inner face -->
     <rect x="-56" y="-56" width="112" height="112" fill="url(#ruled-paper)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
     <!-- Letter W (teal) -->
-    <text x="0" y="37" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="900" font-size="112" fill="#2a9d9d" letter-spacing="-2" style="fill:rgb(42, 157, 157);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:112px;font-weight:900;text-anchor:middle;dominant-baseline:auto">W</text>
+    <text x="0" y="37" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="900" font-size="112" fill="#e8614a" letter-spacing="-2" style="fill:rgb(232, 97, 74);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:112px;font-weight:900;text-anchor:middle;dominant-baseline:auto">W</text>
   </g>
 
   <!-- ===== BLOCK 2: O (green frame, green letter, tilt +5°) ===== -->
