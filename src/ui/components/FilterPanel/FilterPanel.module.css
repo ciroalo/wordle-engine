@@ -1,0 +1,132 @@
+/* ============================================================
+   Panel Layout
+   ============================================================ */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  width: 240px;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #3a3a3c;
+  background-color: #1a1a1e;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* ============================================================
+   Category
+   ============================================================ */
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.categoryName {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #818384;
+  letter-spacing: 0.05em;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #e94560;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clearButton:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Values (Checkboxes)
+   ============================================================ */
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.valueLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #d7dadc;
+}
+
+.valueLabel:hover {
+  color: #ffffff;
+}
+
+.checkbox {
+  accent-color: #538d4e;
+  cursor: pointer;
+}
+
+.valueName {
+  line-height: 1.3;
+}
+
+/* ============================================================
+   Controls
+   ============================================================ */
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 1rem;
+  border-top: 1px solid #3a3a3c;
+}
+
+.wordCount {
+  font-size: 0.8rem;
+  color: #818384;
+  text-align: center;
+}
+
+.nextWordButton {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #538d4e;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nextWordButton:hover:not(:disabled) {
+  background-color: #6aaf5e;
+}
+
+.nextWordButton:disabled {
+  background-color: #3a3a3c;
+  color: #565656;
+  cursor: not-allowed;
+}
