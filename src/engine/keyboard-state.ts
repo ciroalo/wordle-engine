@@ -1,4 +1,4 @@
-import type { Guess, KeyState, LetterFeedback } from "./types";
+import type { Guess, KeyState } from "./types";
 
 /**
  * Priority ranking for keyboard states
