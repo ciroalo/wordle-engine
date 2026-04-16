@@ -1,5 +1,4 @@
-import type { Guess, NormalizedWord } from "@engine/types";
-import { HINTS_PER_WORD } from "@engine/types";
+import type { Guess } from "@engine/types";
 import GridCell from "./GridCell";
 import styles from "./Grid.module.css";
 
@@ -11,13 +10,10 @@ interface GridRowProps {
   rowIndex: number;
   hintText: string | null;
   isHintAvailable: boolean;
-  isHintRevealed: boolean;
+  isHintPinned: boolean;
   onToggleHint: () => void;
 }
 
-/**
- * Builds the cell data for one row, interleaving separator columns between segments
- */
 function buildRowCells(
   segments: number[],
   guess: Guess | null,
@@ -33,31 +29,26 @@ function buildRowCells(
   let letterIndex = 0;
 
   segments.forEach((segmentLength, segIndex) => {
-    // add separator before each segment except the first
     if (segIndex > 0) {
       cells.push({ letter: "", feedback: null, isSeparator: true });
     }
 
     for (let i = 0; i < segmentLength; i++) {
       if (guess) {
-        // submitted row: show guess letters with feedback
         cells.push({
           letter: guess.letters[letterIndex],
           feedback: guess.feedback[letterIndex],
           isSeparator: false,
         });
       } else if (isActive) {
-        // active row: show current input
         cells.push({
           letter: currentInput[letterIndex] ?? "",
           feedback: null,
           isSeparator: false,
         });
       } else {
-        // empty future row
         cells.push({ letter: "", feedback: null, isSeparator: false });
       }
-
       letterIndex++;
     }
   });
@@ -73,38 +64,47 @@ export default function GridRow({
   rowIndex,
   hintText,
   isHintAvailable,
-  isHintRevealed,
+  isHintPinned,
   onToggleHint,
 }: GridRowProps) {
   const cells = buildRowCells(segments, guess, currentInput, isActive);
 
   return (
-    <div className={styles.rowWrapper}>
-      <div className={styles.row}>
-        {cells.map((cell, i) => (
-          <GridCell
-            key={i}
-            letter={cell.letter}
-            feedback={cell.feedback}
-            isSeparator={cell.isSeparator}
-            isActive={isActive}
-          />
-        ))}
-      </div>
-      <div className={styles.hintArea}>
-        {isHintAvailable && (
+    <div className={styles.row}>
+      {cells.map((cell, i) => (
+        <GridCell
+          key={i}
+          letter={cell.letter}
+          feedback={cell.feedback}
+          isSeparator={cell.isSeparator}
+          isActive={isActive}
+        />
+      ))}
+      <div className={styles.hintSlot}>
+        <div
+          className={`${styles.hintWrapper} ${isHintPinned ? styles.pinned : ""} ${
+            !isHintAvailable ? styles.hintHidden : ""
+          }`}
+        >
           <button
-            className={`${styles.hintButton} ${isHintRevealed ? styles.hintButtonActive : ""}`}
+            className={styles.hintButton}
             onClick={onToggleHint}
-            aria-label={`Hint ${rowIndex + 1}`}
+            disabled={!isHintAvailable}
+            aria-label={`Toggle hint ${rowIndex + 1}`}
+            aria-expanded={isHintPinned}
+            aria-hidden={!isHintAvailable}
+            tabIndex={isHintAvailable ? 0 : -1}
           >
             ?
           </button>
-        )}
+          {hintText && (
+            <div className={styles.tooltip} role="tooltip">
+              <span className={styles.tooltipArrow} aria-hidden="true" />
+              <span className={styles.tooltipText}>{hintText}</span>
+            </div>
+          )}
+        </div>
       </div>
-      {isHintRevealed && hintText && (
-        <div className={styles.hintText}>{hintText}</div>
-      )}
     </div>
   );
 }
