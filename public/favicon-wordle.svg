@@ -1,0 +1,26 @@
+<svg width="48" height="46" xmlns="http://www.w3.org/2000/svg" role="img">
+
+  <defs>
+    <!-- Ruled paper pattern for block faces -->
+    <pattern id="ruled-paper" x="0" y="0" width="40" height="7" patternUnits="userSpaceOnUse">
+      <rect width="40" height="8" fill="#fbf5e4"/>
+      <line x1="0" y1="7" x2="40" y2="7" stroke="#d8c9a3" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <g transform="translate(0,0) rotate(-7)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    
+    <!-- Cube back/top face (parallelogram on top) -->
+    <rect x="1" y="6" width="40" height="40" style="fill:rgb(217, 188, 134)" />
+    
+    <!-- Colored frame (coral) -->
+    <rect x="4.5" y="9.5" width="33" height="33" fill="#e8614a" style="fill:rgb(232, 97, 74);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Paper inner face -->
+    <rect x="7" y="12" width="28" height="28" fill="url(#ruled-paper)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:100;text-anchor:start;dominant-baseline:auto"/>
+    
+    <!-- W letter-->
+    <text x="20" y="37" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="100" font-size="12" fill="#e8614a" letter-spacing="-2" style="fill:rgb(232, 97, 74);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:28px;font-weight:900;text-anchor:middle;dominant-baseline:auto">W</text>
+    
+  </g>
+</svg>
