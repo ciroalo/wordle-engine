@@ -52,17 +52,39 @@ export default function CategoryFilter({ category, selectedValues }: CategoryFil
       </button>
       {isOpen && (
         <div className={styles.values}>
-          {category.values.map((value) => (
-            <label key={value} className={styles.valueLabel}>
-              <input
-                type="checkbox"
-                checked={selectedValues.has(value)}
-                onChange={(e) => handleToggle(value, e.target.checked)}
-                className={styles.checkbox}
-              />
-              <span className={styles.valueName}>{value}</span>
-            </label>
-          ))}
+          {category.values.map((value) => {
+            const isChecked = selectedValues.has(value);
+            return (
+              <label
+                key={value}
+                className={`${styles.valueLabel} ${isChecked ? styles.valueLabelChecked : ''}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={(e) => handleToggle(value, e.target.checked)}
+                  className={styles.hiddenCheckbox}
+                />
+                <span className={styles.valueName}>{value}</span>
+                <span className={styles.customCheckbox}>
+                  {isChecked && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={styles.checkIcon}
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </span>
+              </label>
+            );
+          })}
         </div>
       )}
     </div>
