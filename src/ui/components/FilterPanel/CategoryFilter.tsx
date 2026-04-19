@@ -1,20 +1,23 @@
-import { useState } from 'react';
-import type { CategoryIndex } from '@engine/types';
-import { useGame } from '../../context/GameContext';
-import styles from './FilterPanel.module.css';
+import { useState } from "react";
+import type { CategoryIndex } from "@engine/types";
+import { useGame } from "../../context/GameContext";
+import styles from "./FilterPanel.module.css";
 
 interface CategoryFilterProps {
   category: CategoryIndex;
   selectedValues: Set<string>;
 }
 
-export default function CategoryFilter({ category, selectedValues }: CategoryFilterProps) {
+export default function CategoryFilter({
+  category,
+  selectedValues,
+}: CategoryFilterProps) {
   const { dispatch } = useGame();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = (value: string, checked: boolean) => {
     dispatch({
-      type: 'SET_FILTER',
+      type: "SET_FILTER",
       category: category.name,
       value,
       selected: checked,
@@ -23,7 +26,7 @@ export default function CategoryFilter({ category, selectedValues }: CategoryFil
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
-    dispatch({ type: 'CLEAR_FILTER', category: category.name });
+    dispatch({ type: "CLEAR_FILTER", category: category.name });
   };
 
   const hasSelections = selectedValues.size > 0;
@@ -36,7 +39,9 @@ export default function CategoryFilter({ category, selectedValues }: CategoryFil
         aria-expanded={isOpen}
       >
         <div className={styles.categoryHeaderLeft}>
-          <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>
+          <span
+            className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ""}`}
+          >
             ▸
           </span>
           <span className={styles.categoryName}>{category.name}</span>
@@ -45,7 +50,12 @@ export default function CategoryFilter({ category, selectedValues }: CategoryFil
           )}
         </div>
         {hasSelections && (
-          <span className={styles.clearButton} onClick={handleClear} role="button" tabIndex={0}>
+          <span
+            className={styles.clearButton}
+            onClick={handleClear}
+            role="button"
+            tabIndex={0}
+          >
             Clear
           </span>
         )}
@@ -57,7 +67,7 @@ export default function CategoryFilter({ category, selectedValues }: CategoryFil
             return (
               <label
                 key={value}
-                className={`${styles.valueLabel} ${isChecked ? styles.valueLabelChecked : ''}`}
+                className={`${styles.valueLabel} ${isChecked ? styles.valueLabelChecked : ""}`}
               >
                 <input
                   type="checkbox"

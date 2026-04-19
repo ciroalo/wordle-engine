@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useGame } from '../../context/GameContext';
-import { validateConfig } from '@engine/validation';
-import { applyTheme } from '../../styles/theme';
-import FilterPanel from '../FilterPanel/FilterPanel';
-import Grid from '../Grid/Grid';
-import Keyboard from '../Keyboard/Keyboard';
-import StatusMessage from '../StatusMessage/StatusMessage';
-import styles from './App.module.css';
+import { useEffect, useState } from "react";
+import { useGame } from "../../context/GameContext";
+import { validateConfig } from "@engine/validation";
+import { applyTheme } from "../../styles/theme";
+import FilterPanel from "../FilterPanel/FilterPanel";
+import Grid from "../Grid/Grid";
+import Keyboard from "../Keyboard/Keyboard";
+import StatusMessage from "../StatusMessage/StatusMessage";
+import styles from "./App.module.css";
 
-const CONFIG_URL = '/data/config.json';
+const CONFIG_URL = "/data/config.json";
 
-type LoadingStatus = 'loading' | 'error' | 'ready';
+type LoadingStatus = "loading" | "error" | "ready";
 
 function SidebarIcon() {
   return (
@@ -33,9 +33,11 @@ function SidebarIcon() {
 
 export default function App() {
   const { state, dispatch } = useGame();
-  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isPanelOpen, setIsPanelOpen] = useState(() => window.innerWidth >= 1200);
+  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>("loading");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isPanelOpen, setIsPanelOpen] = useState(
+    () => window.innerWidth >= 1200,
+  );
 
   useEffect(() => {
     async function loadConfig() {
@@ -43,32 +45,39 @@ export default function App() {
         const response = await fetch(CONFIG_URL);
 
         if (!response.ok) {
-          throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `Failed to load config: ${response.status} ${response.statusText}`,
+          );
         }
 
         const data = await response.json();
         const result = validateConfig(data);
 
         if (!result.success) {
-          throw new Error(`Invalid configuration:\n${result.errors.join('\n')}`);
+          throw new Error(
+            `Invalid configuration:\n${result.errors.join("\n")}`,
+          );
         }
 
         applyTheme(result.config.theme);
         document.title = result.config.title;
 
-        dispatch({ type: 'CONFIG_LOADED', config: result.config });
-        setLoadingStatus('ready');
+        dispatch({ type: "CONFIG_LOADED", config: result.config });
+        setLoadingStatus("ready");
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Unknown error loading configuration.';
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Unknown error loading configuration.";
         setErrorMessage(message);
-        setLoadingStatus('error');
+        setLoadingStatus("error");
       }
     }
 
     loadConfig();
   }, [dispatch]);
 
-  if (loadingStatus === 'loading') {
+  if (loadingStatus === "loading") {
     return (
       <div className={styles.loadingContainer}>
         <p className={styles.message}>Loading game...</p>
@@ -76,7 +85,7 @@ export default function App() {
     );
   }
 
-  if (loadingStatus === 'error') {
+  if (loadingStatus === "error") {
     return (
       <div className={styles.loadingContainer}>
         <p className={styles.error}>{errorMessage}</p>
@@ -90,7 +99,7 @@ export default function App() {
         <button
           className={styles.sidebarToggle}
           onClick={() => setIsPanelOpen(!isPanelOpen)}
-          aria-label={isPanelOpen ? 'Close filter panel' : 'Open filter panel'}
+          aria-label={isPanelOpen ? "Close filter panel" : "Open filter panel"}
         >
           <SidebarIcon />
         </button>
@@ -99,7 +108,9 @@ export default function App() {
       </header>
 
       <div className={styles.content}>
-        <aside className={`${styles.sidebar} ${isPanelOpen ? styles.sidebarOpen : ''}`}>
+        <aside
+          className={`${styles.sidebar} ${isPanelOpen ? styles.sidebarOpen : ""}`}
+        >
           <FilterPanel />
         </aside>
 
@@ -119,13 +130,16 @@ export default function App() {
 
       <footer className={styles.footer}>
         <span>
-          Powered by <a href="https://github.com/ciroalo/wordle-engine" target="_blank"> Wordle Engine</a> © 2026
+          Powered by{" "}
+          <a href="https://github.com/ciroalo/wordle-engine" target="_blank">
+            {" "}
+            Wordle Engine
+          </a>{" "}
+          © 2026
         </span>
 
         <span className={styles.footerDot}>·</span>
-        <span>
-          Built by  Ciro Alonso 
-        </span>
+        <span>Built by Ciro Alonso</span>
       </footer>
 
       <StatusMessage />
