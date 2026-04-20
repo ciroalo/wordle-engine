@@ -10,10 +10,28 @@ const ROWS = [
   ["Z", "X", "C", "V", "B", "N", "M"],
 ];
 
+function BackspaceIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={styles.backspaceIcon}
+    >
+      <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+      <line x1="18" y1="9" x2="12" y2="15" />
+      <line x1="12" y1="9" x2="18" y2="15" />
+    </svg>
+  );
+}
+
 export default function Keyboard() {
   const { state, dispatch } = useGame();
 
-  // activate physical keyboard listener
   useKeyboardInput();
 
   const getKeyState = (letter: string): KeyState => {
@@ -34,7 +52,6 @@ export default function Keyboard() {
 
   return (
     <div className={styles.keyboard}>
-      {/* Row 1 */}
       <div className={styles.row}>
         {ROWS[0].map((letter) => (
           <Key
@@ -46,7 +63,6 @@ export default function Keyboard() {
         ))}
       </div>
 
-      {/* Row 2 */}
       <div className={styles.row}>
         <div className={styles.halfSpacer} />
         {ROWS[1].map((letter) => (
@@ -60,7 +76,6 @@ export default function Keyboard() {
         <div className={styles.halfSpacer} />
       </div>
 
-      {/* Row 3 — with Enter and Backspace */}
       <div className={styles.row}>
         <Key label="ENTER" state="unknown" isWide onClick={handleEnter} />
         {ROWS[2].map((letter) => (
@@ -71,7 +86,13 @@ export default function Keyboard() {
             onClick={() => handleLetterClick(letter)}
           />
         ))}
-        <Key label="⌫" state="unknown" isWide onClick={handleBackspace} />
+        <button
+          className={`${styles.key} ${styles.wide}`}
+          onClick={handleBackspace}
+          aria-label="Backspace"
+        >
+          <BackspaceIcon />
+        </button>
       </div>
     </div>
   );
