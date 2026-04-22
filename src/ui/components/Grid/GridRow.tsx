@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { Guess } from "@engine/types";
 import GridCell from "./GridCell";
 import styles from "./Grid.module.css";
@@ -24,13 +25,19 @@ function buildRowCells(
     letter: string;
     feedback: "correct" | "present" | "absent" | null;
     isSeparator: boolean;
+    letterIndex: number;
   }[] = [];
 
   let letterIndex = 0;
 
   segments.forEach((segmentLength, segIndex) => {
     if (segIndex > 0) {
-      cells.push({ letter: "", feedback: null, isSeparator: true });
+      cells.push({
+        letter: "",
+        feedback: null,
+        isSeparator: true,
+        letterIndex: -1,
+      });
     }
 
     for (let i = 0; i < segmentLength; i++) {
@@ -39,15 +46,22 @@ function buildRowCells(
           letter: guess.letters[letterIndex],
           feedback: guess.feedback[letterIndex],
           isSeparator: false,
+          letterIndex,
         });
       } else if (isActive) {
         cells.push({
           letter: currentInput[letterIndex] ?? "",
           feedback: null,
           isSeparator: false,
+          letterIndex,
         });
       } else {
-        cells.push({ letter: "", feedback: null, isSeparator: false });
+        cells.push({
+          letter: "",
+          feedback: null,
+          isSeparator: false,
+          letterIndex,
+        });
       }
       letterIndex++;
     }
@@ -68,9 +82,19 @@ export default function GridRow({
   onToggleHint,
 }: GridRowProps) {
   const cells = buildRowCells(segments, guess, currentInput, isActive);
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  const cursorIndex = isActive ? currentInput.length : -1;
+
+  // Reset scroll position when the row has no guess and no input (new round)
+  useEffect(() => {
+    if (!guess && currentInput.length === 0 && rowRef.current) {
+      rowRef.current.scrollLeft = 0;
+    }
+  }, [guess, currentInput.length]);
 
   return (
-    <div className={styles.row}>
+    <div className={styles.row} ref={rowRef}>
       {cells.map((cell, i) => (
         <GridCell
           key={i}
@@ -78,6 +102,7 @@ export default function GridRow({
           feedback={cell.feedback}
           isSeparator={cell.isSeparator}
           isActive={isActive}
+          isCursor={cell.letterIndex === cursorIndex}
         />
       ))}
       <div className={styles.hintSlot}>

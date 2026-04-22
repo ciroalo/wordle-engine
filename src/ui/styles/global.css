@@ -13,6 +13,7 @@
   --color-text: #ffffff;
   --color-text-muted: #818384;
   --color-text-dim: #565656;
+  --color-text-grid-active: #3b82f6;
 }
 
 * {
@@ -33,4 +34,8 @@ body {
 
 button {
   font-family: inherit;
+}
+
+a {
+  color: #3b82f6;
 }
