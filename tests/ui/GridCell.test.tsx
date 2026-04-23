@@ -33,21 +33,21 @@ describe("GridCell", () => {
     const { container } = render(
       <GridCell {...defaultProps} letter="A" feedback="correct" />,
     );
-    expect(container.firstChild?.className).toMatch(/correct/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/correct/);
   });
 
   it("applies present class when revealed", () => {
     const { container } = render(
       <GridCell {...defaultProps} letter="B" feedback="present" />,
     );
-    expect(container.firstChild?.className).toMatch(/present/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/present/);
   });
 
   it("applies absent class when revealed", () => {
     const { container } = render(
       <GridCell {...defaultProps} letter="C" feedback="absent" />,
     );
-    expect(container.firstChild?.className).toMatch(/absent/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/absent/);
   });
 
   it("applies revealing class during flip animation", () => {
@@ -59,7 +59,7 @@ describe("GridCell", () => {
         revealDelay={90}
       />,
     );
-    expect(container.firstChild?.className).toMatch(/revealing/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/revealing/);
     expect((container.firstChild as HTMLElement).dataset.reveal).toBe(
       "correct",
     );
@@ -82,14 +82,14 @@ describe("GridCell", () => {
     const { container } = render(
       <GridCell {...defaultProps} isActive={true} isCursor={true} />,
     );
-    expect(container.firstChild?.className).toMatch(/active/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/active/);
   });
 
   it("applies filled class when letter typed but no feedback", () => {
     const { container } = render(
       <GridCell {...defaultProps} letter="X" isActive={true} />,
     );
-    expect(container.firstChild?.className).toMatch(/filled/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/filled/);
   });
 
   it("applies win class during bounce animation", () => {
@@ -102,7 +102,7 @@ describe("GridCell", () => {
         winDelay={80}
       />,
     );
-    expect(container.firstChild?.className).toMatch(/win/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(/win/);
     expect(
       (container.firstChild as HTMLElement).style.getPropertyValue("--delay"),
     ).toBe("80ms");
