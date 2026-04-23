@@ -59,7 +59,9 @@ describe("GridCell", () => {
         revealDelay={90}
       />,
     );
-    expect((container.firstChild as HTMLElement)?.className).toMatch(/revealing/);
+    expect((container.firstChild as HTMLElement)?.className).toMatch(
+      /revealing/,
+    );
     expect((container.firstChild as HTMLElement).dataset.reveal).toBe(
       "correct",
     );
