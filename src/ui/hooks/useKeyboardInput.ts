@@ -1,21 +1,26 @@
 import { useEffect, useCallback } from "react";
 import { useGame } from "../context/GameContext";
 
-/**
- * Listen for physical keyboard events and dispatches game actions
- */
 export function useKeyboardInput() {
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // ignore if modifier keys are held (let browser shortcuts work)
       if (e.ctrlKey || e.metaKey || e.altKey) {
         return;
       }
 
       if (e.key === "Enter") {
         e.preventDefault();
+        const round = state.round;
+        if (round && round.status === "playing") {
+          if (round.currentInput.length < round.targetWord.totalLetters) {
+            const fn = (window as unknown as Record<string, unknown>)
+              .__triggerShake;
+            if (typeof fn === "function") (fn as () => void)();
+            return;
+          }
+        }
         dispatch({ type: "SUBMIT_GUESS" });
         return;
       }
@@ -28,13 +33,18 @@ export function useKeyboardInput() {
 
       if (/^[a-zA-Z]$/.test(e.key)) {
         dispatch({ type: "INPUT_LETTER", letter: e.key.toUpperCase() });
-        return;
       }
     },
-    [dispatch],
+    [
+      dispatch,
+      state.round?.currentInput.length,
+      state.round?.targetWord.totalLetters,
+      state.round?.status,
+    ],
   );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 }

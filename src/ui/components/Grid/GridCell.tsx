@@ -9,14 +9,20 @@ interface GridCellProps {
   isSeparator: boolean;
   isActive: boolean;
   isCursor: boolean;
+  revealDelay: number | null;
+  isWin: boolean;
+  winDelay: number | null;
 }
 
 export default function GridCell({
   letter,
   feedback,
   isSeparator,
-  isActive,
+  isActive: _isActive,
   isCursor,
+  revealDelay,
+  isWin,
+  winDelay,
 }: GridCellProps) {
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -34,17 +40,40 @@ export default function GridCell({
     return <div className={styles.separator}>{SEPARATOR_CHAR}</div>;
   }
 
-  const cellClasses = [
-    styles.cell,
-    feedback ? styles[feedback] : "",
-    isActive && !feedback ? styles.active : "",
-    letter && !feedback ? styles.filled : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const isRevealing = feedback !== null && revealDelay !== null;
+  const isRevealed = feedback !== null && revealDelay === null;
+
+  const classes: string[] = [styles.cell];
+
+  if (isRevealing) {
+    classes.push(styles.revealing);
+  } else if (isRevealed) {
+    classes.push(styles[feedback]);
+  } else if (isCursor) {
+    classes.push(styles.active);
+  } else if (letter) {
+    classes.push(styles.filled);
+  }
+
+  if (isWin) {
+    classes.push(styles.win);
+  }
+
+  const inlineStyle: Record<string, string> = {};
+  if (revealDelay !== null) {
+    inlineStyle["--delay"] = `${revealDelay}ms`;
+  }
+  if (winDelay !== null) {
+    inlineStyle["--delay"] = `${winDelay}ms`;
+  }
 
   return (
-    <div className={cellClasses} ref={isCursor ? cellRef : null}>
+    <div
+      className={classes.join(" ")}
+      ref={isCursor ? cellRef : null}
+      style={inlineStyle as React.CSSProperties}
+      data-reveal={isRevealing ? feedback : undefined}
+    >
       {letter}
     </div>
   );

@@ -1,89 +1,110 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { render, screen } from "@testing-library/react";
 import GridCell from "../../src/ui/components/Grid/GridCell";
 
+// jsdom doesn't implement scrollIntoView
+beforeAll(() => {
+  Element.prototype.scrollIntoView = () => {};
+});
+
 describe("GridCell", () => {
+  const defaultProps = {
+    letter: "",
+    feedback: null as "correct" | "present" | "absent" | null,
+    isSeparator: false,
+    isActive: false,
+    isCursor: false,
+    revealDelay: null as number | null,
+    isWin: false,
+    winDelay: null as number | null,
+  };
+
   it("renders the letter when provided", () => {
-    render(
-      <GridCell
-        letter="A"
-        feedback={null}
-        isSeparator={false}
-        isActive={false}
-      />,
-    );
+    render(<GridCell {...defaultProps} letter="A" />);
     expect(screen.getByText("A")).toBeInTheDocument();
   });
 
   it("renders the separator character for separator cells", () => {
-    render(
-      <GridCell
-        letter=""
-        feedback={null}
-        isSeparator={true}
-        isActive={false}
-      />,
-    );
+    render(<GridCell {...defaultProps} isSeparator={true} />);
     expect(screen.getByText("/")).toBeInTheDocument();
   });
 
-  it("applies correct feedback class for green", () => {
+  it("applies feedback class when revealed (no animation)", () => {
+    const { container } = render(
+      <GridCell {...defaultProps} letter="A" feedback="correct" />,
+    );
+    expect(container.firstChild?.className).toMatch(/correct/);
+  });
+
+  it("applies present class when revealed", () => {
+    const { container } = render(
+      <GridCell {...defaultProps} letter="B" feedback="present" />,
+    );
+    expect(container.firstChild?.className).toMatch(/present/);
+  });
+
+  it("applies absent class when revealed", () => {
+    const { container } = render(
+      <GridCell {...defaultProps} letter="C" feedback="absent" />,
+    );
+    expect(container.firstChild?.className).toMatch(/absent/);
+  });
+
+  it("applies revealing class during flip animation", () => {
     const { container } = render(
       <GridCell
+        {...defaultProps}
         letter="A"
         feedback="correct"
-        isSeparator={false}
-        isActive={false}
+        revealDelay={90}
       />,
     );
-    expect(container.firstChild).toHaveClass(/correct/);
+    expect(container.firstChild?.className).toMatch(/revealing/);
+    expect((container.firstChild as HTMLElement).dataset.reveal).toBe(
+      "correct",
+    );
   });
 
-  it("applies present class for yellow feedback", () => {
+  it("sets --delay CSS variable during reveal", () => {
     const { container } = render(
       <GridCell
-        letter="B"
-        feedback="present"
-        isSeparator={false}
-        isActive={false}
+        {...defaultProps}
+        letter="A"
+        feedback="correct"
+        revealDelay={180}
       />,
     );
-    expect(container.firstChild).toHaveClass(/present/);
+    const el = container.firstChild as HTMLElement;
+    expect(el.style.getPropertyValue("--delay")).toBe("180ms");
   });
 
-  it("applies absent class for gray feedback", () => {
+  it("applies active class when cursor", () => {
     const { container } = render(
-      <GridCell
-        letter="C"
-        feedback="absent"
-        isSeparator={false}
-        isActive={false}
-      />,
+      <GridCell {...defaultProps} isActive={true} isCursor={true} />,
     );
-    expect(container.firstChild).toHaveClass(/absent/);
+    expect(container.firstChild?.className).toMatch(/active/);
   });
 
-  it("applies active class when active and not yet filled", () => {
+  it("applies filled class when letter typed but no feedback", () => {
     const { container } = render(
-      <GridCell
-        letter=""
-        feedback={null}
-        isSeparator={false}
-        isActive={true}
-      />,
+      <GridCell {...defaultProps} letter="X" isActive={true} />,
     );
-    expect(container.firstChild).toHaveClass(/active/);
+    expect(container.firstChild?.className).toMatch(/filled/);
   });
 
-  it("applies filled class when a letter is typed but no feedback yet", () => {
+  it("applies win class during bounce animation", () => {
     const { container } = render(
       <GridCell
-        letter="X"
-        feedback={null}
-        isSeparator={false}
-        isActive={true}
+        {...defaultProps}
+        letter="A"
+        feedback="correct"
+        isWin={true}
+        winDelay={80}
       />,
     );
-    expect(container.firstChild).toHaveClass(/filled/);
+    expect(container.firstChild?.className).toMatch(/win/);
+    expect(
+      (container.firstChild as HTMLElement).style.getPropertyValue("--delay"),
+    ).toBe("80ms");
   });
 });

@@ -1,69 +1,101 @@
+/* ============================================================
+   Keyboard
+   ============================================================ */
+
 .keyboard {
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.8vw, 8px);
-  padding: 1rem 0;
-  width: 100%;
-  max-width: 700px;
+  gap: 6px;
+  align-items: center;
   user-select: none;
+  flex: 0 0 auto;
 }
 
 .row {
   display: flex;
-  gap: clamp(3px, 0.6vw, 6px);
-  justify-content: center;
-}
-
-.halfSpacer {
-  flex: 0.5;
-}
-
-.key {
-  height: clamp(46px, 7vw, 62px);
-  min-width: clamp(28px, 4vw, 44px);
-  padding: 0 clamp(4px, 0.8vw, 10px);
-  border: none;
-  border-radius: 4px;
-  background-color: var(--color-text-muted);
-  color: var(--color-text);
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  max-width: clamp(36px, 5vw, 52px);
-  transition: background-color 0.1s ease;
-}
-
-.key:active {
-  opacity: 0.8;
-}
-
-.wide {
-  flex: 1.5;
-  max-width: clamp(56px, 9vw, 80px);
-  font-size: clamp(0.65rem, 1.2vw, 0.85rem);
-}
-
-.correct {
-  background-color: var(--color-correct);
-}
-
-.present {
-  background-color: var(--color-present);
-}
-
-.absent {
-  background-color: var(--color-absent);
+  gap: 6px;
 }
 
 /* ============================================================
-   Backspace Icon
+   Key
    ============================================================ */
 
-.backspaceIcon {
-  width: clamp(20px, 3vw, 28px);
-  height: clamp(20px, 3vw, 28px);
+.key {
+  min-width: var(--key-w);
+  height: var(--key);
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--key-bg);
+  color: var(--key-text);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.12s;
+  display: grid;
+  place-items: center;
+}
+
+.key:hover {
+  background: var(--key-bg-hover);
+}
+
+.key:active {
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   Wide keys (Enter)
+   ============================================================ */
+
+.wide {
+  min-width: 60px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   Backspace key
+   ============================================================ */
+
+.backspace {
+  min-width: var(--key-w);
+}
+
+.backspace svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================================
+   Feedback states
+   ============================================================ */
+
+.correct {
+  background: var(--fb-correct);
+  color: var(--fb-correct-text);
+}
+
+.correct:hover {
+  background: var(--fb-correct);
+}
+
+.present {
+  background: var(--fb-present);
+  color: var(--fb-present-text);
+}
+
+.present:hover {
+  background: var(--fb-present);
+}
+
+.absent {
+  background: var(--fb-absent);
+  color: var(--fb-absent-text);
+}
+
+.absent:hover {
+  background: var(--fb-absent);
 }

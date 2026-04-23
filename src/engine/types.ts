@@ -18,6 +18,7 @@ export interface WordEntry {
 
 export interface GameConfig {
   title: string;
+  subtitle?: string;
   theme: ThemeConfig;
   dataset: WordEntry[];
 }

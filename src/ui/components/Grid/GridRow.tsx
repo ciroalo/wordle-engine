@@ -12,6 +12,9 @@ interface GridRowProps {
   hintText: string | null;
   isHintAvailable: boolean;
   isHintPinned: boolean;
+  isShaking: boolean;
+  isRevealing: boolean;
+  isWinRow: boolean;
   onToggleHint: () => void;
 }
 
@@ -79,6 +82,9 @@ export default function GridRow({
   hintText,
   isHintAvailable,
   isHintPinned,
+  isShaking,
+  isRevealing,
+  isWinRow,
   onToggleHint,
 }: GridRowProps) {
   const cells = buildRowCells(segments, guess, currentInput, isActive);
@@ -86,7 +92,6 @@ export default function GridRow({
 
   const cursorIndex = isActive ? currentInput.length : -1;
 
-  // Reset scroll position when the row has no guess and no input (new round)
   useEffect(() => {
     if (!guess && currentInput.length === 0 && rowRef.current) {
       rowRef.current.scrollLeft = 0;
@@ -94,7 +99,10 @@ export default function GridRow({
   }, [guess, currentInput.length]);
 
   return (
-    <div className={styles.row} ref={rowRef}>
+    <div
+      className={`${styles.row} ${isShaking ? styles.shake : ""}`}
+      ref={rowRef}
+    >
       {cells.map((cell, i) => (
         <GridCell
           key={i}
@@ -103,6 +111,13 @@ export default function GridRow({
           isSeparator={cell.isSeparator}
           isActive={isActive}
           isCursor={cell.letterIndex === cursorIndex}
+          revealDelay={
+            isRevealing && cell.feedback ? cell.letterIndex * 90 : null
+          }
+          isWin={isWinRow && !cell.isSeparator}
+          winDelay={
+            isWinRow && !cell.isSeparator ? cell.letterIndex * 80 : null
+          }
         />
       ))}
       <div className={styles.hintSlot}>
@@ -124,7 +139,7 @@ export default function GridRow({
           </button>
           {hintText && (
             <div className={styles.tooltip} role="tooltip">
-              <span className={styles.tooltipArrow} aria-hidden="true" />
+              <span className={styles.tooltipArrow}>Hint {rowIndex + 1}</span>
               <span className={styles.tooltipText}>{hintText}</span>
             </div>
           )}
