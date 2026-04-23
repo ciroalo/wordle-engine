@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/wordle-engine/',
   resolve: {
     alias: {
       '@engine': path.resolve(__dirname, 'src/engine'),

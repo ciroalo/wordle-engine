@@ -10,7 +10,7 @@ import StatusMessage from "../StatusMessage/StatusMessage";
 import HelpModal from "../HelpModal/HelpModal";
 import styles from "./App.module.css";
 
-const CONFIG_URL = "/data/config.json";
+const CONFIG_URL = `${import.meta.env.BASE_URL}data/config.json`;
 
 type LoadingStatus = "loading" | "error" | "ready";
 
