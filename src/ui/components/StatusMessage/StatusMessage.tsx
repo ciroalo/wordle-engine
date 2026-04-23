@@ -12,7 +12,7 @@ export default function StatusMessage() {
 
   const round = state.round;
   const currentTargetId = round?.targetWord.id ?? null;
-  const isRoundOver = round?.status === 'won' || round?.status === 'lost';
+  const isRoundOver = round?.status === "won" || round?.status === "lost";
 
   // Reset when round changes
   useEffect(() => {
