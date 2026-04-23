@@ -4,6 +4,8 @@
 
 A reusable, client-side game engine for themed Wordle-style guessing games. Build a football Wordle, a celebrity Wordle, a historical figures Wordle — swap the JSON, keep the engine.
 
+**[Play the demo →](https://ciroalo.github.io/wordle-engine/)**
+
 ## What Makes This Different
 
 This is not a Wordle clone. It is a **game engine** designed to power many themed guessing games from a single codebase. The engine is fully generic — it discovers categories, values, and word shapes from the dataset at load time. Variable-length words, compound names, and custom attribute systems are all handled automatically.
@@ -12,21 +14,115 @@ The engine logic is written as pure TypeScript with zero framework dependencies.
 
 ## Features
 
-- **Variable-length words and compound names** — "Thierry Henry", "Jean-Pierre Papin", or single-word entries all work.
-- **Category-based filtering** — OR logic within a category, AND logic across categories. Categories are derived automatically from the dataset.
-- **Progressive hint system** — Five pre-authored hints per word, revealed one per failed attempt.
-- **Full Wordle feedback logic** — Including correct duplicate-letter handling (greens first, yellows left-to-right).
-- **Themed deployments** — Site title and color scheme defined per deployment via a single JSON config file.
-- **Zero backend** — Fully client-side, deploys to any static host.
+- **Variable-length words and compound names** — single words, two-word names, hyphenated names all work
+- **Category-based filtering** — OR within categories, AND across categories, auto-derived from the dataset
+- **Progressive hint system** — 5 hints per word, hover to preview, click to pin
+- **Full Wordle feedback** — correct duplicate-letter handling
+- **Animations** — tile pop, flip reveal, row shake, win bounce
+- **Dark & light themes** — toggle in the header
+- **Responsive** — adaptive tile sizing, horizontal scroll for long words on mobile
+- **Zero backend** — fully client-side, deploys to any static host
 
 ## Tech Stack
 
-- **Language:** TypeScript
-- **UI:** React 18
-- **Build:** Vite
-- **Styling:** CSS Modules + CSS custom properties for theming
-- **State:** React Context + useReducer (no external state library)
-- **Testing:** Vitest + React Testing Library
+TypeScript · React 19.2.5 · Vite · CSS Modules · Vitest
+
+## Create Your Own Themed Wordle
+
+This project is designed to be forked. Create your own themed game in minutes.
+
+### 1. Fork and clone
+
+```bash
+# Fork this repo on GitHub, then:
+git clone https://github.com/YOUR_USERNAME/wordle-engine.git
+cd wordle-engine
+npm install
+```
+
+### 2. Create your config
+
+```bash
+cp public/data/config.example.json public/data/config.json
+```
+
+Edit `public/data/config.json` with your theme. The structure:
+
+```json
+{
+  "title": "Your Game Title",
+  "subtitle": "Wordle Engine",
+  "theme": {
+    "accentColor": "#4F8BFF",
+    "greenColor": "#538d4e",
+    "yellowColor": "#b59f3b",
+    "grayColor": "#3a3a3c",
+    "primaryColor": "#1a1a2e"
+  },
+  "dataset": [
+    {
+      "word": "Example Name",
+      "categories": {
+        "Category A": ["Value 1", "Value 2"],
+        "Category B": ["Value 3"]
+      },
+      "hints": [
+        "First hint (easiest)",
+        "Second hint",
+        "Third hint",
+        "Fourth hint",
+        "Fifth hint (hardest)"
+      ]
+    }
+  ]
+}
+```
+
+Each entry requires:
+- `word` — the answer (supports spaces, hyphens, accented characters)
+- `categories` — any keys you want, values are arrays of strings
+- `hints` — exactly 5 strings, ordered from easiest to hardest
+
+### 3. Run locally
+
+```bash
+npm run dev
+```
+
+Open http://localhost:5173
+
+### 4. Deploy to GitHub Pages
+
+The repo comes with a GitHub Actions workflow that auto-deploys on every push to `main`.
+
+1. Go to your fork on GitHub → **Settings** → **Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Push to `main` — your site deploys automatically
+
+Your game will be live at `https://YOUR_USERNAME.github.io/wordle-engine/`
+
+**Important:** Update the `base` in `vite.config.ts` if your repo has a different name:
+
+```typescript
+base: '/your-repo-name/',
+```
+
+### 5. Receive engine updates
+
+To pull improvements from the original engine without losing your config:
+
+```bash
+# Add upstream (one-time setup)
+git remote add upstream https://github.com/ciroalo/wordle-engine.git
+
+# Pull latest engine updates
+git fetch upstream
+git merge upstream/main
+```
+
+Your `config.json` is gitignored, so merges won't conflict with your data. If `config.example.json` changes, you may want to review and apply relevant changes to your `config.json`.
+
+---
 
 ## Architecture
 
@@ -51,66 +147,29 @@ src/
 
 Architecture Decision Records live in [`docs/adr/`](./docs/adr/).
 
-## Running Locally
+## Development
 
-Requires Node 18 or later.
+### Running locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173
-
-## Running Tests
+### Running tests
 
 ```bash
-npm run test         # Run all tests once
-npm run test:watch   # Run in watch mode during development
+npm run test
+npm run test:watch
 ```
 
-## Building for Production
+### Production build
 
 ```bash
 npm run build
+npm run preview
 ```
 
-The build output goes to `dist/` and can be deployed to any static host (Netlify, Vercel, GitHub Pages, Cloudflare Pages, etc.).
-
-## Configuring a Themed Deployment
-
-The engine loads a single JSON config from `public/data/config.json` at startup. To create a new themed game, replace this file with your own dataset:
-
-```json
-{
-  "title": "Your Themed Wordle",
-  "theme": {
-    "primaryColor": "#1a1a2e",
-    "accentColor": "#e94560",
-    "greenColor": "#538d4e",
-    "yellowColor": "#b59f3b",
-    "grayColor": "#3a3a3c"
-  },
-  "dataset": [
-    {
-      "word": "Thierry Henry",
-      "categories": {
-        "position": ["Striker"],
-        "league": ["Premier League", "La Liga"]
-      },
-      "hints": [
-        "Born in 1977",
-        "Born in Les Ulis, France",
-        "All-time top scorer for the French national team",
-        "Won the Premier League unbeaten",
-        "World Cup winner in 1998"
-      ]
-    }
-  ]
-}
-```
-
-Each entry requires a `word`, a `categories` object (any keys you like), and exactly 5 hints.
 
 ## Documentation
 
@@ -122,3 +181,4 @@ Each entry requires a `word`, a `categories` object (any keys you like), and exa
 ## License
 
 MIT
+
