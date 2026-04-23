@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CategoryIndex } from "@engine/types";
 import { useGame } from "../../context/GameContext";
+import { ChevIcon, CheckIcon } from "../Icons";
 import styles from "./FilterPanel.module.css";
 
 interface CategoryFilterProps {
@@ -13,90 +14,60 @@ export default function CategoryFilter({
   selectedValues,
 }: CategoryFilterProps) {
   const { dispatch } = useGame();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
-  const handleToggle = (value: string, checked: boolean) => {
+  const handleToggle = (value: string) => {
+    const isSelected = selectedValues.has(value);
     dispatch({
       type: "SET_FILTER",
       category: category.name,
       value,
-      selected: checked,
+      selected: !isSelected,
     });
   };
 
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch({ type: "CLEAR_FILTER", category: category.name });
-  };
-
-  const hasSelections = selectedValues.size > 0;
+  const activeCount = selectedValues.size;
+  const hasSelections = activeCount > 0;
 
   return (
-    <div className={styles.category}>
+    <div
+      className={styles.category}
+      data-open={isOpen}
+      data-active={hasSelections}
+    >
       <button
         className={styles.categoryHeader}
         onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
       >
-        <div className={styles.categoryHeaderLeft}>
-          <span
-            className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ""}`}
-          >
-            ▸
-          </span>
-          <span className={styles.categoryName}>{category.name}</span>
-          {hasSelections && (
-            <span className={styles.selectionCount}>{selectedValues.size}</span>
-          )}
-        </div>
-        {hasSelections && (
-          <span
-            className={styles.clearButton}
-            onClick={handleClear}
-            role="button"
-            tabIndex={0}
-          >
-            Clear
-          </span>
-        )}
+        <ChevIcon className={styles.chevron} />
+        <span className={styles.categoryName}>{category.name}</span>
+        <span className={styles.categoryCount}>
+          {hasSelections ? activeCount : category.values.length}
+        </span>
       </button>
-      {isOpen && (
-        <div className={styles.values}>
-          {category.values.map((value) => {
-            const isChecked = selectedValues.has(value);
-            return (
-              <label
-                key={value}
-                className={`${styles.valueLabel} ${isChecked ? styles.valueLabelChecked : ""}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={(e) => handleToggle(value, e.target.checked)}
-                  className={styles.hiddenCheckbox}
-                />
-                <span className={styles.valueName}>{value}</span>
-                <span className={styles.customCheckbox}>
-                  {isChecked && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className={styles.checkIcon}
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </span>
-              </label>
-            );
-          })}
+      <div className={styles.categoryBody}>
+        <div>
+          <div className={styles.options}>
+            {category.values.map((value) => {
+              const checked = selectedValues.has(value);
+              return (
+                <label key={value} className={styles.checkRow}>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => handleToggle(value)}
+                    className={styles.hiddenCheckbox}
+                  />
+                  <span className={styles.checkBox}>
+                    <CheckIcon />
+                  </span>
+                  <span className={styles.checkLabel}>{value}</span>
+                </label>
+              );
+            })}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

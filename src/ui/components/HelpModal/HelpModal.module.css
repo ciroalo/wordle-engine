@@ -25,24 +25,10 @@
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
   padding: 28px;
-  max-width: 420px;
+  max-width: 480px;
   width: 100%;
   box-shadow: var(--shadow-lg);
   animation: pop-up 0.24s var(--ease);
-  text-align: center;
-}
-
-/* Accent top borders */
-.accentWin {
-  border-top: 3px solid var(--fb-correct);
-}
-
-.accentLoss {
-  border-top: 3px solid #ef6666;
-}
-
-.accentComplete {
-  border-top: 3px solid var(--fb-present);
 }
 
 /* ============================================================
@@ -56,73 +42,99 @@
 }
 
 /* ============================================================
-   Title
+   Title + Subtitle
    ============================================================ */
 
 .title {
-  margin: 0 0 12px;
+  margin: 0 0 6px;
   font-size: 20px;
   font-weight: 700;
   color: var(--text);
 }
 
-/* ============================================================
-   Body
-   ============================================================ */
-
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 24px;
+.subtitle {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 22px;
+  line-height: 1.5;
 }
 
-.bodyText {
-  font-size: 14px;
-  line-height: 1.6;
+/* ============================================================
+   Sections
+   ============================================================ */
+
+.section {
+  margin-bottom: 18px;
+}
+
+.section:last-of-type {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--text-muted);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.sectionText {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
   margin: 0;
 }
 
-.answer {
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700;
+/* ============================================================
+   Tile Color List
+   ============================================================ */
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 13px;
   color: var(--text);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 15px;
+  line-height: 1.4;
 }
 
 /* ============================================================
-   Action Button
+   Mini Tiles (examples)
    ============================================================ */
 
-.actionButton {
-  padding: 11px 24px;
-  border-radius: var(--radius-md);
-  border: 0;
-  background: var(--accent);
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: all 0.15s var(--ease);
-  min-width: 140px;
-  box-shadow: 0 4px 14px -4px rgba(var(--accent-rgb), 0.45);
+.miniTile {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 13px;
+  flex: 0 0 auto;
 }
 
-.actionButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px -4px rgba(var(--accent-rgb), 0.55);
+.miniCorrect {
+  background: var(--fb-correct);
+  color: var(--fb-correct-text);
 }
 
-.actionButton:active {
-  transform: translateY(0);
+.miniPresent {
+  background: var(--fb-present);
+  color: var(--fb-present-text);
 }
 
-.actionButton:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
+.miniAbsent {
+  background: var(--fb-absent);
+  color: var(--fb-absent-text);
 }

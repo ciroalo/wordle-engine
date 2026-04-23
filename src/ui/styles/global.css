@@ -1,41 +1,290 @@
-:root {
-  /* Theme tokens (overridden at runtime by config) */
-  --color-primary: #1a1a2e;
-  --color-accent: #e94560;
-  --color-correct: #538d4e;
-  --color-present: #b59f3b;
-  --color-absent: #3a3a3c;
+/* ============================================================
+   Wordle Engine — Design System
+   Theme-agnostic tokens, re-themable via data-theme + --accent
+   ============================================================ */
 
-  /* Base UI tokens (fixed) */
-  --color-bg: #121213;
-  --color-surface: #1a1a1e;
-  --color-border: #3a3a3c;
-  --color-text: #ffffff;
-  --color-text-muted: #818384;
-  --color-text-dim: #565656;
-  --color-text-grid-active: #3b82f6;
+/* ============================================================
+   Shared tokens (theme-independent)
+   ============================================================ */
+
+:root {
+  /* Accent — overridden at runtime from config */
+  --accent: #4f8bff;
+  --accent-rgb: 79, 139, 255;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Sizing — overridden by JS ResizeObserver */
+  --tile: 56px;
+  --tile-gap: 6px;
+  --sep-w: 12px;
+  --key: 40px;
+  --key-w: 42px;
+  --tile-font: 24px;
+
+  /* Layout */
+  --sidebar-w: 280px;
+  --header-h: 56px;
+
+  /* Easing */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Feedback colors (theme-independent) */
+  --fb-correct: oklch(0.66 0.16 148);
+  --fb-present: oklch(0.78 0.15 85);
+  --fb-correct-text: #fff;
+  --fb-present-text: #1a1405;
 }
 
-* {
+/* ============================================================
+   Dark theme (default)
+   ============================================================ */
+
+html[data-theme="dark"] {
+  --bg: #0f1115;
+  --bg-elev: #161a21;
+  --bg-elev-2: #1d222b;
+  --panel: #13171e;
+  --panel-border: #232933;
+  --divider: #1f242d;
+  --text: #e7eaf0;
+  --text-muted: #8b93a3;
+  --text-dim: #5c6576;
+  --tile-border: #2a3140;
+  --tile-border-strong: #3a4556;
+  --tile-bg: transparent;
+  --tile-filled: #1c222c;
+  --key-bg: #2a313d;
+  --key-bg-hover: #333b48;
+  --key-text: #e7eaf0;
+  --fb-absent: #394150;
+  --fb-absent-text: #a9b0bd;
+  --shadow-lg:
+    0 12px 40px -10px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --overlay: rgba(6, 8, 12, 0.72);
+}
+
+/* ============================================================
+   Light theme
+   ============================================================ */
+
+html[data-theme="light"] {
+  --bg: #f6f7f9;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0f2f5;
+  --panel: #ffffff;
+  --panel-border: #e3e6eb;
+  --divider: #eceff3;
+  --text: #14171d;
+  --text-muted: #626a78;
+  --text-dim: #9199a6;
+  --tile-border: #d5d9e0;
+  --tile-border-strong: #b3bac5;
+  --tile-bg: transparent;
+  --tile-filled: #f2f4f7;
+  --key-bg: #dce0e7;
+  --key-bg-hover: #cfd4dd;
+  --key-text: #14171d;
+  --fb-absent: #9199a6;
+  --fb-absent-text: #ffffff;
+  --shadow-lg:
+    0 10px 30px -8px rgba(18, 24, 36, 0.16), 0 2px 4px rgba(18, 24, 36, 0.06);
+  --overlay: rgba(16, 20, 28, 0.42);
+}
+
+/* ============================================================
+   Reset + Base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html,
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
   font-family:
-    system-ui,
+    "Inter",
     -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 button {
   font-family: inherit;
+  cursor: pointer;
 }
 
 a {
-  color: #3b82f6;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   Shared: Icon Button
+   ============================================================ */
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.icon-btn:hover {
+  background: var(--bg-elev);
+  color: var(--text);
+  border-color: var(--panel-border);
+}
+
+.icon-btn[aria-pressed="true"] {
+  background: var(--bg-elev);
+  color: var(--accent);
+  border-color: var(--panel-border);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============================================================
+   Shared: Mono Label (JetBrains Mono uppercase labels)
+   ============================================================ */
+
+.mono-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+@keyframes tile-flip {
+  0% {
+    transform: rotateX(0);
+    background: var(--tile-filled);
+    border-color: var(--tile-border-strong);
+    color: var(--text);
+  }
+  49% {
+    transform: rotateX(90deg);
+    background: var(--tile-filled);
+    border-color: var(--tile-border-strong);
+    color: transparent;
+  }
+  51% {
+    transform: rotateX(90deg);
+    background: var(--rv-bg);
+    border-color: var(--rv-bg);
+    color: var(--rv-text);
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--rv-bg);
+    border-color: var(--rv-bg);
+    color: var(--rv-text);
+  }
+}
+
+@keyframes tile-pop {
+  0% {
+    transform: scale(0.92);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes row-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes tile-win {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

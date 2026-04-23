@@ -1,28 +1,72 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../context/GameContext";
+import { CloseIcon } from "../Icons";
 import styles from "./StatusMessage.module.css";
 
 export default function StatusMessage() {
   const { state, dispatch } = useGame();
   const [isDismissed, setIsDismissed] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const lastTargetIdRef = useRef<string | null>(null);
-
-  // Reset dismissal when the round changes (new word)
-  const currentTargetId = state.round?.targetWord.id ?? null;
-  if (currentTargetId !== lastTargetIdRef.current) {
-    lastTargetIdRef.current = currentTargetId;
-    if (isDismissed) {
-      setIsDismissed(false);
-    }
-  }
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const round = state.round;
+  const currentTargetId = round?.targetWord.id ?? null;
   const isRoundOver = round?.status === "won" || round?.status === "lost";
-  const shouldShow = isRoundOver && !isDismissed;
 
-  // Escape key closes the modal
+  // Reset when round changes
   useEffect(() => {
-    if (!shouldShow) return;
+    if (currentTargetId !== lastTargetIdRef.current) {
+      lastTargetIdRef.current = currentTargetId;
+      setIsDismissed(false);
+      setIsVisible(false);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    }
+  }, [currentTargetId]);
+
+  // Delay modal appearance to let animations play
+  useEffect(() => {
+    if (!isRoundOver || isDismissed || isVisible) return;
+    if (!round) return;
+
+    const totalLetters = round.targetWord.totalLetters;
+    const revealDuration = totalLetters * 90 + 600;
+
+    let totalDelay: number;
+    if (round.status === "won") {
+      // Wait for reveal + win bounce
+      const winDuration = totalLetters * 80 + 700;
+      totalDelay = revealDuration + winDuration + 100;
+    } else {
+      // Wait for reveal only + small pause
+      totalDelay = revealDuration + 300;
+    }
+
+    timerRef.current = setTimeout(() => {
+      setIsVisible(true);
+      timerRef.current = null;
+    }, totalDelay);
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [
+    isRoundOver,
+    isDismissed,
+    isVisible,
+    round?.status,
+    round?.targetWord.totalLetters,
+  ]);
+
+  // Escape key closes
+  useEffect(() => {
+    if (!isVisible) return;
 
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -32,21 +76,25 @@ export default function StatusMessage() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [shouldShow]);
+  }, [isVisible]);
 
-  if (!shouldShow || !round) {
+  if (!isVisible || isDismissed || !round) {
     return null;
   }
 
-  // Determine if this was the final word in the dataset
   const totalWords = state.normalizedWords.length;
   const playedCount = state.session.playedWordIds.size;
   const isGameComplete = totalWords > 0 && playedCount >= totalWords;
-
   const isWin = round.status === "won";
 
   const handleClose = () => {
     setIsDismissed(true);
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsDismissed(true);
+    }
   };
 
   const handleNextWord = () => {
@@ -59,38 +107,28 @@ export default function StatusMessage() {
     dispatch({ type: "RESET_SESSION" });
   };
 
-  // Backdrop click closes
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      setIsDismissed(true);
-    }
-  };
-
-  // ============================================================
-  // Content per state
-  // ============================================================
-
   let title: string;
   let body: React.ReactNode;
-  let actionButton: React.ReactNode;
-  let modalClass = styles.modal;
+  let actionLabel: string;
+  let actionHandler: () => void;
+  let accentClass = "";
 
   if (isGameComplete) {
-    modalClass = `${styles.modal} ${styles.modalComplete}`;
     title = "🎉 You finished the game!";
+    accentClass = styles.accentComplete;
+    actionLabel = "Start Over";
+    actionHandler = handleStartOver;
     body = (
       <>
         {isWin ? (
           <p className={styles.bodyText}>
-            Solved in {round.guesses.length}{" "}
+            Solved in <strong>{round.guesses.length}</strong>{" "}
             {round.guesses.length === 1 ? "guess" : "guesses"}.
           </p>
         ) : (
           <p className={styles.bodyText}>
             The answer was{" "}
-            <strong className={styles.answer}>
-              {round.targetWord.normalized}
-            </strong>
+            <span className={styles.answer}>{round.targetWord.normalized}</span>
             .
           </p>
         )}
@@ -100,75 +138,59 @@ export default function StatusMessage() {
         </p>
       </>
     );
-    actionButton = (
-      <button
-        className={styles.primaryButton}
-        onClick={handleStartOver}
-        autoFocus
-      >
-        Start Over
-      </button>
-    );
   } else if (isWin) {
-    modalClass = `${styles.modal} ${styles.modalWin}`;
     title = "Correct!";
+    accentClass = styles.accentWin;
+    actionLabel = "Next Word";
+    actionHandler = handleNextWord;
     body = (
       <p className={styles.bodyText}>
-        Solved in {round.guesses.length}{" "}
+        Solved in <strong>{round.guesses.length}</strong>{" "}
         {round.guesses.length === 1 ? "guess" : "guesses"}.
       </p>
     );
-    actionButton = (
-      <button
-        className={styles.primaryButton}
-        onClick={handleNextWord}
-        autoFocus
-      >
-        Next Word
-      </button>
-    );
   } else {
-    modalClass = `${styles.modal} ${styles.modalLoss}`;
     title = "You lose!";
+    accentClass = styles.accentLoss;
+    actionLabel = "Next Word";
+    actionHandler = handleNextWord;
     body = (
       <p className={styles.bodyText}>
         The answer was{" "}
-        <strong className={styles.answer}>{round.targetWord.normalized}</strong>
-        .
+        <span className={styles.answer}>{round.targetWord.normalized}</span>.
       </p>
-    );
-    actionButton = (
-      <button
-        className={styles.primaryButton}
-        onClick={handleNextWord}
-        autoFocus
-      >
-        Next Word
-      </button>
     );
   }
 
   return (
     <div
-      className={styles.backdrop}
+      className={styles.overlay}
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
       aria-labelledby="status-title"
     >
-      <div className={modalClass}>
+      <div className={`${styles.modal} ${accentClass}`}>
         <button
-          className={styles.closeButton}
+          className={`icon-btn ${styles.closeButton}`}
           onClick={handleClose}
           aria-label="Close"
         >
-          ×
+          <CloseIcon />
         </button>
+
         <h2 id="status-title" className={styles.title}>
           {title}
         </h2>
         <div className={styles.body}>{body}</div>
-        <div className={styles.actions}>{actionButton}</div>
+
+        <button
+          className={styles.actionButton}
+          onClick={actionHandler}
+          autoFocus
+        >
+          {actionLabel}
+        </button>
       </div>
     </div>
   );

@@ -1,32 +1,81 @@
 /* ============================================================
-   Panel Layout
+   Panel
    ============================================================ */
 
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
   width: 100%;
-  max-width: 260px;
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: var(--color-surface);
+  background: var(--panel);
   box-sizing: border-box;
 }
 
-@media (max-width: 950px) {
-  .panel {
-    height: calc(100vh - 57px);
-  }
+/* ============================================================
+   Header
+   ============================================================ */
+
+.header {
+  padding: 16px 18px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.filters {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.headerTitle {
+  margin: 0;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.clearAll {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.clearAll:hover {
+  color: var(--accent);
+}
+
+.clearAll:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.clearAll:disabled:hover {
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   Filter List (scrollable)
+   ============================================================ */
+
+.filterList {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 10px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-border) transparent;
+}
+
+.filterList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filterList::-webkit-scrollbar-thumb {
+  background: var(--panel-border);
+  border-radius: 3px;
 }
 
 /* ============================================================
@@ -34,42 +83,37 @@
    ============================================================ */
 
 .category {
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: 2px 0;
+  margin-bottom: 2px;
 }
 
 /* ============================================================
-   Category Header (clickable toggle)
+   Category Header
    ============================================================ */
 
 .categoryHeader {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 4px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px;
   background: transparent;
-  color: var(--color-text);
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.1s ease;
   text-align: left;
-  font-family: inherit;
-  min-width: 0;
-  overflow: hidden;
+  transition: background 0.15s;
 }
 
 .categoryHeader:hover {
-  background-color: var(--color-border);
-}
-
-.categoryHeaderLeft {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  background: var(--bg-elev);
 }
 
 /* ============================================================
@@ -77,194 +121,210 @@
    ============================================================ */
 
 .chevron {
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  transition: transform 0.15s ease;
-  display: inline-block;
   width: 12px;
-  text-align: center;
+  height: 12px;
+  transition: transform 0.2s var(--ease);
+  color: var(--text-muted);
+  flex: 0 0 auto;
 }
 
-.chevronOpen {
+.category[data-open="true"] .chevron {
   transform: rotate(90deg);
 }
 
 /* ============================================================
-   Category Name + Count Badge
+   Category Name + Count
    ============================================================ */
 
 .categoryName {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  letter-spacing: 0.05em;
+  flex: 1;
 }
 
-.selectionCount {
-  font-size: 0.65rem;
-  font-weight: 700;
-  background-color: var(--color-correct);
-  color: var(--color-text);
-  padding: 1px 6px;
+.categoryCount {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  font-size: 10px;
+  padding: 2px 7px;
   border-radius: 10px;
-  min-width: 16px;
-  text-align: center;
-  line-height: 1.4;
+  background: var(--bg-elev);
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+.category[data-active="true"] .categoryCount {
+  background: rgba(var(--accent-rgb), 0.15);
+  color: var(--accent);
 }
 
 /* ============================================================
-   Clear Button
+   Category Body (animated collapse)
    ============================================================ */
 
-.clearButton {
-  background: none;
-  border: none;
-  color: var(--color-accent);
-  font-size: 0.7rem;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 2px;
+.categoryBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s var(--ease);
 }
 
-.clearButton:hover {
-  text-decoration: underline;
+.category[data-open="true"] .categoryBody {
+  grid-template-rows: 1fr;
+}
+
+.categoryBody > div {
+  overflow: hidden;
 }
 
 /* ============================================================
-   Values (Checkboxes) — shown when dropdown is open
+   Checkbox Options
    ============================================================ */
 
-/* ============================================================
-   Values (Custom Checkboxes) — shown when dropdown is open
-   ============================================================ */
-
-.values {
+.options {
+  padding: 2px 6px 8px 22px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 4px 10px 8px 28px;
+  gap: 1px;
 }
 
-.valueLabel {
+.checkRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.8rem;
-  color: var(--color-text);
-  padding: 4px 0;
-  transition: color 0.15s ease;
+  user-select: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 
-.valueLabel:hover {
-  color: var(--color-text);
+.checkRow:hover {
+  background: var(--bg-elev);
+  color: var(--text);
 }
 
-.valueLabelChecked .valueName {
-  color: var(--color-text-grid-active);
-}
-
-/* Hidden native checkbox — still accessible to screen readers and keyboard */
 .hiddenCheckbox {
-  position: absolute;
-  opacity: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
   width: 0;
   height: 0;
+  position: absolute;
+  opacity: 0;
   pointer-events: none;
 }
 
-/* Text — fills available space, truncates with ellipsis */
-.valueName {
+.checkBox {
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--tile-border-strong);
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  transition: all 0.15s;
+  background: transparent;
+}
+
+.checkBox svg {
+  width: 10px;
+  height: 10px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.hiddenCheckbox:checked + .checkBox {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.hiddenCheckbox:checked + .checkBox svg {
+  opacity: 1;
+}
+
+.hiddenCheckbox:checked ~ .checkLabel {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.checkLabel {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  line-height: 1.3;
-  transition: color 0.15s ease;
 }
-
-/* Custom checkbox — grid cell style, pinned to the right */
-.customCheckbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-  background-color: transparent;
-}
-
-.valueLabel:hover .customCheckbox {
-  border-color: var(--color-text-dim);
-}
-
-/* Checked state */
-.valueLabelChecked .customCheckbox {
-  background-color: var(--color-correct);
-  border-color: var(--color-correct);
-}
-
-/* Checkmark icon inside */
-.checkIcon {
-  width: 12px;
-  height: 12px;
-  color: var(--color-text);
-}
-
-/* Focus ring for keyboard navigation */
-.hiddenCheckbox:focus-visible ~ .customCheckbox {
-  outline: 2px solid var(--color-text);
-  outline-offset: 2px;
-}
-/*
-.valueName {
-  line-height: 1.3;
-  word-break: break-word;
-  min-width: 0;
-}
-*/
 
 /* ============================================================
-   Controls
+   Footer (sticky)
    ============================================================ */
 
-.controls {
+.footer {
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--divider);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  gap: 10px;
 }
 
 .wordCount {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
   text-align: center;
+  color: var(--text-muted);
 }
 
-.nextWordButton {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--color-correct);
-  color: var(--color-text);
-  font-size: 0.9rem;
+.wordCountNumber {
   font-weight: 700;
+  color: var(--text);
+  font-size: 13px;
+}
+
+/* ============================================================
+   Next Word Button
+   ============================================================ */
+
+.nextButton {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: all 0.15s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px -4px rgba(var(--accent-rgb), 0.45);
 }
 
-.nextWordButton:hover:not(:disabled) {
-  opacity: 0.85;
+.nextButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -4px rgba(var(--accent-rgb), 0.55);
 }
 
-.nextWordButton:disabled {
-  background-color: var(--color-border);
-  color: var(--color-text-dim);
+.nextButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.nextButton:disabled {
+  background: var(--bg-elev-2);
+  color: var(--text-dim);
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.nextButton svg {
+  width: 14px;
+  height: 14px;
 }

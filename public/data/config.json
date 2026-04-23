@@ -1,5 +1,6 @@
 {
   "title": "Football Wordle",
+  "subtitle": "wordle engine",
   "theme": {
     "primaryColor": "#1a1a2e",
     "accentColor": "#e94560",
