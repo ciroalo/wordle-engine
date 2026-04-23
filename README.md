@@ -1,5 +1,12 @@
 # Wordle Engine
 
+![CI](https://github.com/ciroalo/wordle-engine/actions/workflows/ci.yml/badge.svg)
+![Release](https://img.shields.io/github/v/release/ciroalo/wordle-engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+<img src="https://img.shields.io/badge/built%20with-React-blue" />
+<img src="https://img.shields.io/badge/build-Vite-purple" />
+<img src="https://img.shields.io/badge/language-TypeScript-blue" />
+
 ![banner](docs/imgs/wordle_engine_github_banner.svg)
 
 A reusable, client-side game engine for themed Wordle-style guessing games. Build a football Wordle, a celebrity Wordle, a historical figures Wordle — swap the JSON, keep the engine.
